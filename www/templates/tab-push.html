@@ -1,0 +1,15 @@
+<ion-view view-title="Push Notifications">
+  <ion-content>
+    <ion-list>
+        <ion-toggle  ng-model="settings.enablePush" ng-change="changePush()">
+            Enable Notifications
+        </ion-toggle>
+        <div class="card">
+          <div class="item item-text-wrap">{{token}}</div>
+        </div>
+        <ion-item ng-repeat="notification in notifications track by $index" type="item-content">
+            {{notification}}
+        </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
