@@ -27,9 +27,18 @@
     {
       "locator": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
       "id": "nl.x-services.plugins.toast"
+    },
+    {
+      "locator": "https://github.com/katzer/cordova-plugin-email-composer.git",
+      "id": "de.appplant.cordova.plugin.email-composer"
     }
   ],
   "cordovaPlatforms": [
-    "android"
+    "android",
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
+    }
   ]
 }
