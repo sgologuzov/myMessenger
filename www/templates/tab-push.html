@@ -4,7 +4,7 @@
         <ion-toggle  ng-model="settings.enablePush" ng-change="changePush()">
             Enable Notifications
         </ion-toggle>
-        <div class="card">
+        <div class="card" ng-click="sendToken()">
           <div class="item item-text-wrap">{{token}}</div>
         </div>
         <ion-item ng-repeat="notification in notifications track by $index" type="item-content">

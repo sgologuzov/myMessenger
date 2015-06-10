@@ -21,8 +21,8 @@ angular.module('starter.controllers', [])
     $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('PushCtrl', function($scope, DeviceTokens, ionPlatform, $cordovaDialogs) {
-    $scope.token = DeviceTokens.getCurrentToken();
+.controller('PushCtrl', function($scope, DeviceTokens, ionPlatform, $cordovaDialogs, $cordovaEmailComposer, $cordovaDevice) {
+    $scope.token = "";
     $scope.notifications = [];
 
     $scope.settings = {
@@ -53,6 +53,7 @@ angular.module('starter.controllers', [])
         //             via the console fields as shown.
         console.log("In foreground " + notification.foreground  + " Coldstart " + notification.coldstart);
         if (notification.event == "registered") {
+            $scope.token = notification.regid;
             DeviceTokens.store(notification.regid, "android");
         }
         else if (notification.event == "message") {
@@ -109,5 +110,18 @@ angular.module('starter.controllers', [])
         } else {
             DeviceTokens.unregister(function(){$scope.settings.enablePush=false;});
         }
+    }
+
+    $scope.sendToken = function () {
+            var email = {
+                to: 'sgologuzov@spotware.com',
+                subject: 'myMessenger Registration Token',
+                body: 'Device: ' + JSON.stringify($cordovaDevice.getDevice()) + '\nToken: ' + $scope.token,
+                isHtml: false
+            };
+
+            $cordovaEmailComposer.open(email).then(null, function () {
+              // user cancelled email
+            });
     }
 });
