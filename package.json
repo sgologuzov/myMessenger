@@ -21,7 +21,7 @@
     "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
     {
-      "locator": "https://github.com/phonegap-build/PushPlugin.git",
+      "locator": "https://github.com/sgologuzov/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
     },
     {
@@ -34,11 +34,11 @@
     }
   ],
   "cordovaPlatforms": [
-    "android",
     {
       "platform": "android",
       "version": "",
       "locator": "android"
-    }
+    },
+    "android"
   ]
 }
