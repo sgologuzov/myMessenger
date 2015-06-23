@@ -72,6 +72,7 @@ angular.module('starter.services', [])
         // Create a random userid to store with it
         var data = { user: 'user' + Math.floor((Math.random() * 10000000) + 1), type: type, token: token };
         console.log("Post token for registered device with data " + JSON.stringify(data));
+        $cordovaPush.subscribe(token, "/topics/global");
 
 /*
         $http.post('http://192.168.1.16:8000/subscribe', JSON.stringify(data))
