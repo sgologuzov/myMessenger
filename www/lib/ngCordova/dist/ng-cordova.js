@@ -5107,7 +5107,7 @@ angular.module('ngCordova.plugins.network', [])
       },
 
       clearOnlineWatch: function () {
-        document.removeEventListener("online", offlineEvent);
+        document.removeEventListener("online", onlineEvent);
         $rootScope.$$listeners["$cordovaNetwork:online"] = [];
       }
     };
@@ -6979,6 +6979,17 @@ angular.module('ngCordova.plugins.push', [])
         }, function (error) {
           q.reject(error);
         }, options);
+
+        return q.promise;
+      },
+
+      subscribe: function (token, topic) {
+        var q = $q.defer();
+        $window.plugins.pushNotification.subscribe(function (result) {
+          q.resolve(result);
+        }, function (error) {
+          q.reject(error);
+        }, token, topic);
 
         return q.promise;
       },
