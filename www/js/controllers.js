@@ -1,24 +1,101 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('ParentCtrl', function($scope, $ionicLoading, $ionicPopup, User) {
 
-.controller('ChatsCtrl', function($scope, Chats) {
-    // With the new view caching in Ionic, Controllers are only called
-    // when they are recreated or on app start, instead of every page change.
-    // To listen for when this page is active (for example, to refresh data),
-    // listen for the $ionicView.enter event:
-    //
-    //$scope.$on('$ionicView.enter', function(e) {
-    //});
+  $scope.user = User.getCurrent();
 
-    $scope.chats = Chats.all();
-    $scope.remove = function(chat) {
-        Chats.remove(chat);
-    }
+  $scope.showLoading = function(){
+    $ionicLoading.show({
+      noBackdrop: true,
+      template: '<i class="favoriteModal ion-loading-c"></i>'
+    });
+  };
+
+  $scope.hideLoading = function(){
+    $ionicLoading.hide();
+  };
+
+
+  $scope.showUsernamePopup = function() {
+    $scope.data = {}
+
+    var myPopup = $ionicPopup.show({
+      template: '<input type="text" ng-model="data.userId" autofocus>',
+      title: 'Choose a user',
+      scope: $scope,
+      buttons: [
+          {
+            text: '<b>Log In</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if (!$scope.data.userId) {
+                //don't allow the user to close unless he enters the username
+                e.preventDefault();
+              } else {
+                return $scope.data.userId;
+              }
+            }
+          },
+      ]
+    });
+    myPopup.then(function(userId) {
+      User.get(userId).then(function(user) {
+        User.setCurrent(user);
+        $scope.user = user;
+      });
+    });
+  };
+
+  if(!$scope.user){
+    $scope.showUsernamePopup();
+  }
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-    $scope.chat = Chats.get($stateParams.chatId);
+.controller('ContactsCtrl', function($scope, User) {
+    $scope.showLoading();
+    User.query().then(function(data) {
+        $scope.contacts = data;
+        $scope.numUsers = data.length;
+        $scope.hideLoading();
+    });
+})
+
+.controller('ChatCtrl', function($scope, $ionicScrollDelegate, $stateParams, User, Message, Chat, Notification) {
+    $scope.showLoading();
+    User.get($stateParams.contactId).then(function(contact) {
+        $scope.contact = contact;
+        Message.query([User.getCurrent().id, contact.id]).then(function(data) {
+            $scope.messages = data;
+            $scope.hideLoading();
+            $ionicScrollDelegate.scrollBottom(true);
+        });
+    });
+
+    //Notification.hide();
+
+
+    $scope.$watch('newMessage', function(newValue, oldValue) {
+    if(typeof newValue != 'undefined'){
+      if(newValue != ''){
+        Chat.typing();
+      }
+      else{
+        Chat.stopTyping();
+      }
+    }
+    });
+
+    $scope.sendMessage = function() {
+    if($scope.newMessage){
+      Chat.sendMessage($scope.newMessage);
+      $scope.newMessage = '';
+      $ionicScrollDelegate.scrollBottom(true);
+    }
+    else{
+      alert('Can\'t be empty');
+    }
+    };
+
 })
 
 .controller('PushCtrl', function($scope, DeviceTokens, ionPlatform, $cordovaDialogs, $cordovaEmailComposer, $cordovaDevice) {

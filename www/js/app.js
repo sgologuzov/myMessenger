@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter.services'])
+angular.module('gcm-chat', ['ionic', 'ngCordova', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -33,36 +33,27 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
     .state('tab', {
     url: "/tab",
     abstract: true,
-    templateUrl: "templates/tabs.html"
+    templateUrl: "templates/tabs.html",
+    controller: 'ParentCtrl'
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
+    .state('tab.contacts', {
+      url: '/contacts',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'tab-contacts': {
+          templateUrl: 'templates/tab-contacts.html',
+          controller: 'ContactsCtrl'
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+
+    .state('tab.chat', {
+      url: '/chat/:contactId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-chat': {
+          templateUrl: 'templates/tab-chat.html',
+          controller: 'ChatCtrl'
         }
       }
     })
@@ -78,6 +69,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/contacts');
 
 });

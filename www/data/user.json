@@ -1,0 +1,26 @@
+[{
+    "id": "kawase_support",
+    "name": "Kawase Support",
+    "lastText": "When did you try to connect?",
+    "icon": "/img/kawase.png"
+  }, {
+    "id": "kawase_sales",
+    "name": "Kawase Sales",
+    "lastText": "Hey, it\"s me",
+    "icon": "/img/kawase.png"
+  },{
+    "id": "kawase_accounts",
+    "name": "Kawase Accounts",
+    "lastText": "Verified Registration Data #3",
+    "icon": "/img/kawase.png"
+  }, {
+    "id": "sgologuzov",
+    "name": "Sergey Gologuzov",
+    "lastText": "How are you?",
+    "icon": "/img/sgologuzov.png"
+  }, {
+    "id": "jdoe",
+    "name": "John Doe",
+    "lastText": "Do you need any help?",
+    "icon": "/img/user.png"
+  }]

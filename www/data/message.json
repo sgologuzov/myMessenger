@@ -1,0 +1,21 @@
+[{
+    "from": "kawase_support",
+    "to": "sgologuzov",
+    "text": "When did you try to connect?",
+    "date": "2015-06-30T18:25:43+02:00"
+  }, {
+    "from": "kawase_sales",
+    "to": "sgologuzov",
+    "text": "Hey, it\"s me",
+    "date": "2015-06-20T10:11:40+02:00"
+  },{
+    "from": "kawase_accounts",
+    "to": "sgologuzov",
+    "text": "Verified Registration Data #3",
+    "date": "2015-05-30T07:15:00+02:00"
+  },{
+    "from": "jdoe",
+    "to": "sgologuzov",
+    "text": "Could you tell me about your strategy?",
+    "date": "2015-05-29T12:20:45+02:00"
+  }]

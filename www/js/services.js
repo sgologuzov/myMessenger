@@ -1,5 +1,176 @@
 angular.module('starter.services', [])
 
+.factory('User', function($http) {
+  var currentUser;
+
+  // Create an internal promise that resolves to the data inside user.json;
+  // we'll use this promise in our own API to get the data we need.
+  var json = $http.get('/data/user.json').then(function(response) {
+    return response.data;
+  });
+
+  // A basic JavaScript constructor to create new users;
+  // passed in data gets copied directly to the object.
+  // (This is not the best design, but works for this demo.)
+  var User = function(data) {
+    if (data) angular.copy(data, this);
+  };
+
+  // The query function returns an promise that resolves to
+  // an array of User, one for each in the JSON.
+  User.query = function() {
+    return json.then(function(data) {
+      return data.map(function(user) {
+        return new User(user);
+      });
+    })
+  };
+
+  // The get function returns a promise that resolves to a
+  // specific user, found by ID. We find it by looping
+  // over all of them and checking to see if the IDs match.
+  User.get = function(id) {
+    return json.then(function(data) {
+      var result = null;
+      angular.forEach(data, function(user) {
+        if (user.id == id) result = new User(user);
+      });
+      return result;
+    })
+  };
+
+  User.getCurrent = function() {
+      return currentUser;
+  };
+
+  User.setCurrent = function(user) {
+      currentUser = user;
+  };
+  // Finally, the factory itself returns the entire
+  // User constructor (which has `query` and `get` attached).
+  return User;
+})
+
+.factory('Message', function($http) {
+  // Create an internal promise that resolves to the data inside message.json;
+  // we'll use this promise in our own API to get the data we need.
+  var json = $http.get('/data/message.json').then(function(response) {
+    return response.data;
+  });
+
+  // A basic JavaScript constructor to create new users;
+  // passed in data gets copied directly to the object.
+  // (This is not the best design, but works for this demo.)
+  var Message = function(data) {
+    if (data) angular.copy(data, this);
+  };
+
+  // The query function returns an promise that resolves to
+  // an array of Message, one for each in the JSON.
+  Message.query = function(userIds) {
+    return json.then(function(data) {
+      var result = [];
+      angular.forEach(data, function(message) {
+        if(userIds.indexOf(message.from) > -1 && userIds.indexOf(message.to) > -1) {
+          result.push(new Message(message));
+        }
+      });
+      return result;
+    })
+  };
+
+  // Finally, the factory itself returns the entire
+  // User constructor (which has `query` and `get` attached).
+  return Message;
+})
+
+.factory('Chat', function($rootScope, $ionicScrollDelegate, Notification) {
+
+  var userId;
+
+  var functions = {
+    all: function() {
+      return friends;
+    },
+    get: function(friendId) {
+      return friends[friendId];
+    },
+    getMessages: function(contactId){
+      return messages;
+    },
+    sendMessage: function(msg){
+      /*
+      messages.push({
+        username: username,
+        content: msg
+      });
+      * */
+      //socket.emit('new message', msg, username);
+    },
+    getUserId: function(){
+      return userId;
+    },
+    setUserId: function(newUserId){
+      userId = newUserId;
+      //socket.emit('add user', username);
+    },
+    typing: function(){
+      //socket.emit('typing');
+    },
+    stopTyping: function(){
+      //socket.emit('stop typing');
+    }
+  };
+
+  /*socket.on('user joined', function(data){
+    Notification.show(data.username + ' connected');
+  });
+
+  socket.on('new message', function(msg){
+    $rootScope.$apply(function () {
+      messages.push(msg);
+      $ionicScrollDelegate.scrollBottom(true);
+    });
+  });
+
+  socket.on('user left', function(data){
+    Notification.show(data.username + ' disconnected');
+  });
+
+  socket.on('typing', function(data){
+    console.log('typing');
+    Notification.show(data.username + ' is typing');
+  });
+
+  socket.on('stop typing', function(data){
+    console.log('stop typing');
+    Notification.hide();
+  });*/
+
+  return functions;
+
+})
+
+.factory('Notification', function($timeout) {
+
+ return {
+  show: function(msg){
+    var $notificationDiv = angular.element( document.querySelector( '.notification' ) );
+    $notificationDiv.css('display','inherit');
+    $notificationDiv.html(msg);
+    if(msg.indexOf('typing') == -1){
+      $timeout(function(){
+        $notificationDiv.css('display','none');
+      }, 5000);
+    }
+  },
+  hide: function(){
+    var $notificationDiv = angular.element( document.querySelector( '.notification' ) );
+    $notificationDiv.css('display','none');
+  }
+ }
+})
+
 // Race condition found when trying to use $ionicPlatform.ready in app.js and calling register to display id in AppCtrl.
 // Implementing it here as a factory with promises to ensure register function is called before trying to display the id.
 .factory(("ionPlatform"), function( $q ){
@@ -113,34 +284,6 @@ angular.module('starter.services', [])
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  },{
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'https://pbs.twimg.com/profile_images/598205061232103424/3j5HUXMY.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'https://pbs.twimg.com/profile_images/578237281384841216/R3ae1n61.png'
-  }];
 
   return {
     all: function() {

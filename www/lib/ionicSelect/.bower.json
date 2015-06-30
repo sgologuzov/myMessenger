@@ -1,0 +1,13 @@
+{
+  "name": "ionicSelect",
+  "homepage": "https://github.com/domiSchenk/ionic-Select-Control",
+  "_release": "03b567b6c9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "03b567b6c967875241cf09b4d336b6431731c44a"
+  },
+  "_source": "git://github.com/domiSchenk/ionic-Select-Control.git",
+  "_target": "*",
+  "_originalSource": "domiSchenk/ionic-Select-Control"
+}
