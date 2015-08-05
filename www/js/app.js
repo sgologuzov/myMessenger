@@ -69,6 +69,6 @@ angular.module('gcm-chat', ['ionic', 'ngCordova', 'starter.controllers', 'starte
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/contacts');
+  $urlRouterProvider.otherwise('/tab/push');
 
 });
