@@ -46,9 +46,9 @@ angular.module('starter.controllers', [])
     });
   };
 
-  if(!$scope.user){
-    $scope.showUsernamePopup();
-  }
+  //if(!$scope.user){
+  //  $scope.showUsernamePopup();
+  //}
 })
 
 .controller('ContactsCtrl', function($scope, User) {
